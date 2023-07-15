@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h1>This is the first components</h1>
-        <router-view></router-view>
+        <h1>This is a First Page</h1>
     </div>
 </template>
 <script>
