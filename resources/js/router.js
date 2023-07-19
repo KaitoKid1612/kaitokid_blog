@@ -9,6 +9,10 @@ import hooks from "./components/pages/basic/hooks.vue";
 
 const routes = [
     {
+        path: "/404",
+        component: errorPage,
+    },
+    {
         path: "/my-new-route",
         component: firstPage,
     },
