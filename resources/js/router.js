@@ -12,6 +12,10 @@ const routes = [
     //Project routes ...
 
     {
+        path: "/404",
+        component: errorPage,
+    },
+    {
         path: "/my-new-route",
         component: firstPage,
     },
