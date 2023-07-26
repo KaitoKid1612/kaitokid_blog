@@ -19,7 +19,15 @@
                     <div class="_1side_menu_list">
                         <ul class="_1side_menu_list_ul">
                             <li>
-                                <a><Icon type="ios-speedometer" /> Overview</a>
+                                <router-link to="/home"><a>
+                                        <Icon type="ios-speedometer" />
+                                        Dashboard
+                                    </a></router-link>
+                            </li>
+                            <li>
+                                <router-link to="/tags"><a>
+                                        <Icon type="ios-speedometer" /> Tags
+                                    </a></router-link>
                             </li>
                         </ul>
                     </div>
@@ -42,6 +50,6 @@
             </div>
             <!--========= HEADER ==========-->
         </div>
-        <router-view />
+        <router-view></router-view>
     </div>
 </template>
