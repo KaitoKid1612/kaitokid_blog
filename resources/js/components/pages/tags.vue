@@ -5,38 +5,28 @@
                 <!--~~~~~~~ TABLE ONE ~~~~~~~~~-->
                 <div class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20">
                     <p class="_title0">Tags <Button @click.prevent="addModal=true"><Icon type="md-add" /> Add Tag</Button></p>
-
                     <div class="_overflow _table_div">
                         <table class="_table">
-                            <!-- TABLE TITLE -->
                             <tr>
                                 <th>ID</th>
                                 <th>Tag name</th>
                                 <th>Created at</th>
                                 <th>Action</th>
                             </tr>
-                            <!-- TABLE TITLE -->
-
-                            <!-- ITEMS -->
-                            <tr>
-                                <td>1</td>
-                                <td class="_table_name">
-                                    Manhattan's art center "Shed" opening
-                                    ceremony
-                                </td>
-                                <td>Economy</td>
+                            <tr v-for="(tag, i) in tags" :key="i" v-if="tags.length">
+                                <td>{{ tag.id }}</td>
+                                <td class="_table_name">{{ tag.tag_name }}</td>
+                                <td>{{ tag.created_at }}</td>
                                 <td>
-                                    <Button type="info" size="small">Info</Button>
-                                    <Button type="error" size="small">Error</Button>
+                                    <Button type="info" size="small">Edit</Button>
+                                    <Button type="error" size="small">Delete</Button>
                                 </td>
                             </tr>
-                            <!-- ITEMS -->
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAG ADDING MODAL -->
             <Modal
                 v-model="addModal"
                 title="Add tag"
@@ -46,8 +36,8 @@
                 <Input v-model="data.tagName" placeholder="Add tag name"/>
 
                 <div slot='footer'>
-                    <Button type="default" @click.prevent="addModal=false">Close</Button>
-                    <Button type="primary" @click.prevent="addTag">Add tag</Button>
+                    <Button type="default" @click="addModal=false">Close</Button>
+                    <Button type="primary" @click="addTag" :disable="isAdding" :loading="isAdding">{{ isAdding ? 'Adding...' : 'Add tag'}}</Button>
                 </div>
             </Modal>
         </div>
@@ -62,16 +52,32 @@ export default {
             },
             addModal: false,
             isAdding: false,
+            tags: [],
         }
     },
     methods: {
-        addTag() {
+        async addTag() {
             if (this.data.tagName.trim() == '') return this.e('Oops !!!', 'Tag name is required');
+            const res = await this.callApi('post', 'app/create-tag', this.data);
+            if (res.status === 200) {
+                console.log(res)
+                this.tags.unshift(res.data);
+                this.s('Great!', 'Tag has been added successfully!');
+                this.addModal = false;
+                this.data.tagName = '';
+            } else {
+                this.swr()
+            }
         }
     },
-    computed: {
-
-    }
+    async created() {
+        const res = await this.callApi('get', 'app/get-tag')
+        if (res.status == 200) {
+            this.tags = res.data
+        } else {
+            this.swr()
+        }
+    },
 };
 </script>
 <style lang=""></style>

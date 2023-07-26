@@ -15,7 +15,7 @@ const routes = [
     //Project routes ...
     {
         name: "home",
-        path: "/home",
+        path: "/",
         component: home,
     },
     {

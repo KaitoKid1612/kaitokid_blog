@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('app/create_tag', [TestController::class, 'create']);
+Route::post('app/create-tag', [AdminController::class, 'createTag']);
+Route::get('app/get-tag', [AdminController::class, 'getTag']);
+
 
 Route::get('/', function () {
     return view('welcome');
