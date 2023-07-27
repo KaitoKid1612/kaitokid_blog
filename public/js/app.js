@@ -119,61 +119,74 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    addTag: function addTag() {
+    fetchTags: function fetchTags() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var res;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              if (!(_this.data.tagName.trim() == '')) {
-                _context.next = 2;
-                break;
-              }
-              return _context.abrupt("return", _this.e('Oops !!!', 'Tag name is required'));
+              _context.next = 2;
+              return _this.callApi('get', 'app/get-tag');
             case 2:
-              _context.next = 4;
-              return _this.callApi('post', 'app/create-tag', _this.data);
-            case 4:
               res = _context.sent;
               if (res.status === 200) {
-                console.log(res);
-                _this.tags.unshift(res.data);
-                _this.s('Great!', 'Tag has been added successfully!');
-                _this.addModal = false;
-                _this.data.tagName = '';
+                _this.tags = res.data;
               } else {
                 _this.swr();
               }
-            case 6:
+            case 4:
             case "end":
               return _context.stop();
           }
         }, _callee);
       }))();
+    },
+    addTag: function addTag() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var res;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!(_this2.data.tagName.trim() == '')) {
+                _context2.next = 2;
+                break;
+              }
+              return _context2.abrupt("return", _this2.e('Tag name is required'));
+            case 2:
+              _context2.next = 4;
+              return _this2.callApi('post', 'app/create-tag', _this2.data);
+            case 4:
+              res = _context2.sent;
+              if (res.status === 200) {
+                _this2.s('Tag has been added successfully!');
+                _this2.addModal = false;
+                _this2.data.tagName = '';
+                _this2.fetchTags();
+              } else {
+                _this2.swr();
+              }
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
     }
   },
   created: function created() {
-    var _this2 = this;
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var res;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
+    var _this3 = this;
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
           case 0:
-            _context2.next = 2;
-            return _this2.callApi('get', 'app/get-tag');
-          case 2:
-            res = _context2.sent;
-            if (res.status == 200) {
-              _this2.tags = res.data;
-            } else {
-              _this2.swr();
-            }
-          case 4:
+            _this3.fetchTags();
+          case 1:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
-      }, _callee2);
+      }, _callee3);
     }))();
   }
 });
@@ -704,13 +717,13 @@ var render = function render() {
   }, [_vm._v("Close")]), _vm._v(" "), _c("Button", {
     attrs: {
       type: "primary",
-      disable: _vm.isAdding,
+      disabled: _vm.isAdding,
       loading: _vm.isAdding
     },
     on: {
       click: _vm.addTag
     }
-  }, [_vm._v(_vm._s(_vm.isAdding ? "Adding..." : "Add tag"))])], 1)], 1)], 1)]);
+  }, [_vm._v(_vm._s(_vm.isAdding ? "Adding.." : "Add tag"))])], 1)], 1)], 1)]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -810,32 +823,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, null, [[0, 6]]);
       }))();
     },
-    i: function i(title, desc) {
+    i: function i(desc) {
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Hey";
       this.$Notice.info({
         title: title,
         desc: desc
       });
     },
-    s: function s(title, desc) {
+    s: function s(desc) {
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Great!";
       this.$Notice.success({
         title: title,
         desc: desc
       });
     },
-    w: function w(title, desc) {
+    w: function w(desc) {
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Oops!";
       this.$Notice.warning({
         title: title,
         desc: desc
       });
     },
-    e: function e(title, desc) {
+    e: function e(desc) {
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Oops!";
       this.$Notice.error({
         title: title,
         desc: desc
       });
     },
-    swr: function swr(title) {
-      var desc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Something went wrong! Please try again.";
+    swr: function swr() {
+      var desc = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Somethingn went wrong! Please try again.";
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Oops";
       this.$Notice.error({
         title: title,
         desc: desc
@@ -877,13 +895,13 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 var routes = [
 //Project routes ...
 {
-  name: "home",
   path: "/",
-  component: _components_pages_home_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  component: _components_pages_home_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+  name: "home"
 }, {
-  name: "tags",
   path: "/tags",
-  component: _components_pages_tags_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  component: _components_pages_tags_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+  name: "tags"
 }, {
   path: "/new-route",
   component: _components_pages_newRoutePage__WEBPACK_IMPORTED_MODULE_2__["default"]

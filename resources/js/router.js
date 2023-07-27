@@ -14,14 +14,14 @@ import tags from "./components/pages/tags.vue";
 const routes = [
     //Project routes ...
     {
-        name: "home",
         path: "/",
         component: home,
+        name: "home",
     },
     {
-        name: "tags",
         path: "/tags",
         component: tags,
+        name: "tags",
     },
     {
         path: "/new-route",

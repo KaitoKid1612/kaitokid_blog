@@ -31,14 +31,14 @@
                 v-model="addModal"
                 title="Add tag"
                 :mask-closable="false"
-                :closable='false'
+                :closable="false"
                 >
-                <Input v-model="data.tagName" placeholder="Add tag name"/>
-
-                <div slot='footer'>
+                <Input v-model="data.tagName" placeholder="Add tag name" />
+                <div slot="footer">
                     <Button type="default" @click="addModal=false">Close</Button>
-                    <Button type="primary" @click="addTag" :disable="isAdding" :loading="isAdding">{{ isAdding ? 'Adding...' : 'Add tag'}}</Button>
+                    <Button type="primary" @click="addTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Adding..' : 'Add tag'}}</Button>
                 </div>
+
             </Modal>
         </div>
     </div>
@@ -56,27 +56,33 @@ export default {
         }
     },
     methods: {
+        async fetchTags() {
+            const res = await this.callApi('get', 'app/get-tag');
+            if (res.status === 200) {
+                this.tags = res.data;
+            } else {
+                this.swr();
+            }
+        },
+
         async addTag() {
-            if (this.data.tagName.trim() == '') return this.e('Oops !!!', 'Tag name is required');
+            if (this.data.tagName.trim() == '') {
+                return this.e('Tag name is required');
+            }
             const res = await this.callApi('post', 'app/create-tag', this.data);
             if (res.status === 200) {
-                console.log(res)
-                this.tags.unshift(res.data);
-                this.s('Great!', 'Tag has been added successfully!');
+                this.s('Tag has been added successfully!');
                 this.addModal = false;
                 this.data.tagName = '';
+                this.fetchTags();
             } else {
-                this.swr()
+                this.swr();
             }
-        }
+        },
     },
+
     async created() {
-        const res = await this.callApi('get', 'app/get-tag')
-        if (res.status == 200) {
-            this.tags = res.data
-        } else {
-            this.swr()
-        }
+        this.fetchTags();
     },
 };
 </script>

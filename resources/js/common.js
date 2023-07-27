@@ -15,31 +15,31 @@ export default {
             }
         },
 
-        i(title, desc) {
+        i(desc, title = "Hey") {
             this.$Notice.info({
                 title: title,
                 desc: desc,
             });
         },
-        s(title, desc) {
+        s(desc, title = "Great!") {
             this.$Notice.success({
                 title: title,
                 desc: desc,
             });
         },
-        w(title, desc) {
+        w(desc, title = "Oops!") {
             this.$Notice.warning({
                 title: title,
                 desc: desc,
             });
         },
-        e(title, desc) {
+        e(desc, title = "Oops!") {
             this.$Notice.error({
                 title: title,
                 desc: desc,
             });
         },
-        swr(title, desc = "Something went wrong! Please try again.") {
+        swr(desc = "Somethingn went wrong! Please try again.", title = "Oops") {
             this.$Notice.error({
                 title: title,
                 desc: desc,
