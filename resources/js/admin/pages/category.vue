@@ -13,27 +13,28 @@
                                 <th>Created at</th>
                                 <th>Action</th>
                             </tr>
-                            <tr v-for="(tag, i) in tags" :key="i" v-if="tags.length">
-                                <td>{{ tag.id }}</td>
-                                <td class="_table_name">{{ tag.tag_name }}</td>
-                                <td>{{ tag.created_at }}</td>
+                            <tr v-for="(category, i) in categories" :key="i" v-if="categories.length">
+                                <td>{{ category.id }}</td>
+                                <td class="_table_name">{{ category.category_name }}</td>
+                                <td><img style="height: 50px; width: 50px" :src="`/uploads/${category.icon_image}`"></td>
+                                <td>{{ category.created_at }}</td>
                                 <td>
-                                    <Button type="info" size="small" @click.prevent="showEditModal(tag, i)">Edit</Button>
-                                    <Button type="error" size="small" @click.prevent="showDeleteModal(tag, i)" :loading="tag.isDeleting">Delete</Button>
+                                    <Button type="info" size="small" @click.prevent="showEditModal(category, i)">Edit</Button>
+                                    <Button type="error" size="small" @click.prevent="showDeleteModal(category, i)" :loading="category.isDeleting">Delete</Button>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- TAG ADDING MODAL -->
+            <!-- CATEGORY ADDING MODAL -->
             <Modal
                 v-model="addModal"
                 title="Add category"
                 :mask-closable="false"
                 :closable="false"
                 >
-                <Input v-model="data.tagName" placeholder="Add category name" class="_mar_b10"/>
+                <Input v-model="data.categoryName" placeholder="Add category name" class="_mar_b10"/>
                 <Upload
                     ref="upload"
                     type="drag"
@@ -60,7 +61,7 @@
 
                 <div slot="footer">
                     <Button type="default" @click="addModal=false">Close</Button>
-                    <Button type="primary" @click="addTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Adding...' : 'Add tag'}}</Button>
+                    <Button type="primary" @click="addCategory" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Adding...' : 'Add Category'}}</Button>
                 </div>
             </Modal>
             <!-- TAG EDIT MODAL -->
@@ -70,7 +71,7 @@
                 :mask-closable="false"
                 :closable="false"
                 >
-                <Input v-model="editData.tagName" placeholder="Edit tag name" />
+                <Input v-model="editData.categoryName" placeholder="Edit tag name" />
                 <div slot="footer">
                     <Button type="default" @click="editModal=false">Close</Button>
                     <Button type="primary" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing..' : 'Edit tag'}}</Button>
@@ -103,9 +104,9 @@ export default {
             addModal: false,
             isAdding: false,
             isDeleting: false,
-            tags: [],
+            categories: [],
             editData: {
-                tagName: '',
+                categoryName: '',
             },
             editModal: false,
             index: -1,
@@ -116,20 +117,20 @@ export default {
         }
     },
     methods: {
-        async addTag() {
-            if (this.data.tagName.trim() == '') {
-                return this.e('Tag name is required');
+        async addCategory() {
+            if (this.data.categoryName.trim() == '') {
+                return this.e('Category name is required');
             }
-            const res = await this.callApi('post', 'app/create-tag', this.data);
+            const res = await this.callApi('post', 'app/create-category', this.data);
             if (res.status === 201) {
                 this.tags.unshift(res.data);
                 this.s('Tag has been added successfully!');
                 this.addModal = false;
-                this.data.tagName = '';
+                this.data.categoryName = '';
             } else {
                 if (res.status === 422) {
-                    if (res.data.errors.tagName[0]) {
-                        this.e(res.data.errors.tagName[0]);
+                    if (res.data.errors.categoryName[0]) {
+                        this.e(res.data.errors.categoryName[0]);
                     }
                 } else {
                     this.swr();
@@ -137,18 +138,18 @@ export default {
             }
         },
         async editTag() {
-            if (this.editData.tagName.trim() == '') {
+            if (this.editData.categoryName.trim() == '') {
                 return this.e('Tag name is required');
             }
             const res = await this.callApi('post', 'app/edit-tag', this.editData);
             if (res.status === 200) {
-                this.tags[this.index].tag_name = this.editData.tagName;
+                this.tags[this.index].tag_name = this.editData.categoryName;
                 this.s('Tag has been edited successfully!');
                 this.editModal = false;
             } else {
                 if (res.status == 422) {
-                    if (res.data.errors.tagName) {
-                        this.e(res.data.errors.tagName[0])
+                    if (res.data.errors.categoryName) {
+                        this.e(res.data.errors.categoryName[0])
                     }
                 } else {
                     this.swr()
@@ -181,7 +182,7 @@ export default {
         showEditModal(tag, index) {
             let obj = {
                 id: tag.id,
-                tagName: tag.tag_name,
+                categoryName: tag.tag_name,
             }
             this.editData = obj;
             this.editModal = true;
@@ -216,9 +217,9 @@ export default {
     },
     async created() {
         this.token = window.Laravel.csrfToken;
-        const res = await this.callApi('get', 'app/get-tags')
+        const res = await this.callApi('get', 'app/get-categories')
         if (res.status == 200) {
-            this.tags = res.data
+            this.categories = res.data
         } else {
             this.swr()
         }
