@@ -26,6 +26,11 @@
                                         <Icon type="ios-speedometer" /> Tags
                                     </a></router-link>
                             </li>
+                            <li>
+                                <router-link to="/category"><a>
+                                        <Icon type="ios-speedometer" /> Category
+                                    </a></router-link>
+                            </li>
                         </ul>
                     </div>
                 </div>
