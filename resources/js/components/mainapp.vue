@@ -5,13 +5,11 @@
             <div class="_1side_menu">
                 <div class="_1side_menu_logo">
                     <h3 style="text-align: center">Logo Image</h3>
-                    <!--<img src="/img/logo.jpg" style="width: 108px;margin-left: 68px;"/>-->
                 </div>
 
                 <!--~~~~~~~~ MENU CONTENT ~~~~~~~~-->
                 <div class="_1side_menu_content">
                     <div class="_1side_menu_img_name">
-                        <!-- <img class="_1side_menu_img" src="/pic.png" alt="" title=""> -->
                         <p class="_1side_menu_name">Admin</p>
                     </div>
 
@@ -20,13 +18,17 @@
                         <ul class="_1side_menu_list_ul">
                             <li>
                                 <router-link to="/home"><a>
-                                        <Icon type="ios-speedometer" />
-                                        Dashboard
+                                        <Icon type="ios-speedometer" />Dashboard
                                     </a></router-link>
                             </li>
                             <li>
                                 <router-link to="/tags"><a>
                                         <Icon type="ios-speedometer" /> Tags
+                                    </a></router-link>
+                            </li>
+                            <li>
+                                <router-link to="/category"><a>
+                                        <Icon type="ios-speedometer" /> Category
                                     </a></router-link>
                             </li>
                         </ul>
