@@ -9,7 +9,7 @@
                         <table class="_table">
                             <tr>
                                 <th>ID</th>
-                                <th>Tag name</th>
+                                <th>Category name</th>
                                 <th>Created at</th>
                                 <th>Action</th>
                             </tr>
