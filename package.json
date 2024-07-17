@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "development": "mix",
+        "dev": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
@@ -12,7 +12,9 @@
         "axios": "^1.1.2",
         "laravel-mix": "^6.0.49",
         "vue-loader": "^15.10.1",
-        "vue-template-compiler": "^2.7.14"
+        "vue-template-compiler": "^2.7.14",
+        "webpack": "^5.93.0",
+        "webpack-cli": "^5.1.4"
     },
     "dependencies": {
         "v-click-outside-x": "^4.1.3",
